@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+    <title>
+        daynotes-ZZ
+    </title>
+    <head>
+    </head>
+    <link href="./resources/css/style.css" rel="stylesheet" />
+    <script src="./resources/js/angular.min.js"></script>
+    <script src="./controller/controller.js"></script>
+    <script src="./service/service.js"></script>
+
+    <body ng-app='ZZ_daynotes'>
+      daynotes 0.2
+        <div ng-controller='daynotesController' data-ng-init="getdaynotesData()">
+          Status: {{lastupdatetime}}
+          <div style="{{(operation=='list')?'':'display: none;'}}">
+            <button ng-click="adddaynotesDataDialog()" style="left;">Add</button>
+            <button ng-click="getdaynotesData()">Refresh</button>
+            <button ng-click="savedaynotesData()" style="{{(isChanged)?'':'display: none;'}}">Save</button>
+            <button ng-click="backupdaynotesData()">BackUp</button>
+            
+            <img src="./resources/img/add.png" ng-click='canceldaynotesDataDialog()'>
+            <img src="./resources/img/sync.png" ng-click='canceldaynotesDataDialog()'>
+            <img src="./resources/img/sync.png" ng-click='canceldaynotesDataDialog()'>
+            <img src="./resources/img/cancel.png" ng-click='canceldaynotesDataDialog()'>
+            
+            <table  class="table">
+              <col width="80">
+              <col width="15">
+              <col width="200">
+              <col width="600">
+              <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Pri.</th>
+                    <th>Notes</th>
+                    <th>Details</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr ng-repeat="item in daynotesData | orderBy:['datetime','priority']" >
+                    <td align="center" style="{{daytimestyle(item.datetime)}}" ng-click='editdaynotesDataDialog(item)'>{{item.datetime}}</td>
+                    <td align="center" ng-click='editdaynotesDataDialog(item)'>{{item.priority}}</td>
+                    <td style="white-space: pre-wrap;"><u>{{item.notes}}</u></td>
+                    <td style="white-space: pre-wrap;">{{item.details}}</td>
+                    <td><img src="./resources/img/remove.png" ng-click='deletedaynotesData(item.id)'></td>
+                    
+                  </tr>
+              </tbody>
+            </table>
+          </div> 
+          <div style="{{(operation!='list')?'':'display: none;'}}">
+              <div ng-model="editItemid" style="display: none;"></div>
+              <table  class="table">
+                <thead>
+                    <tr>
+                      <th>Date</th>
+                      <th>Pri.</th>
+                      <th>Notes</th>
+                      <th>Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                      <td align="center" valign="top"><input required pattern="\d{4}-\d{2}-\d{2}" ng-model="editItemdatetime"></input></td>
+                      <td align="center" valign="top">
+                        <select  required ng-model="editItempriority" >
+                          <option value="1" ng-selected="editItempriority=='1'">1</option>
+                          <option value="2" ng-selected="editItempriority=='2'">2</option>
+                          <option value="3" ng-selected="editItempriority=='3'">3</option>
+                        </select>
+                      </td>
+                      <td align="center" valign="top"><input required ng-model="editItemnotes"></input></td>
+                      <br></br>
+                      <td align="center" valign="top"><textarea type="text" rows="10" ng-model="editItemdetails"></textarea></td>
+                    </tr>
+                </tbody>
+              </table>
+              <img src="./resources/img/ok.png" ng-click='adddaynotesData()' style="{{(operation=='add')?'':'display: none;'}}">
+              <img src="./resources/img/ok.png" ng-click='editdaynotesData()' style="{{(operation=='edit')?'':'display: none;'}}">
+              <img src="./resources/img/cancel.png" ng-click='canceldaynotesDataDialog()'>
+          </div>
+        </div>
+    </body>
+</html>
